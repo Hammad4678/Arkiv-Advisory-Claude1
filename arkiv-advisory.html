@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arkiv Advisory — Global Business & Financial Consultancy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --black:#0a0a0a; --off-black:#111; --dark:#1a1a1a;
+      --gold:#c9a84c; --gold-light:#e4c97e; --gold-pale:#f5e6c0;
+      --white:#f8f6f1; --grey:#888; --border:rgba(201,168,76,0.22);
+    }
+    html { scroll-behavior:smooth; }
+    body { background:var(--black); color:var(--white); font-family:'Montserrat',sans-serif; font-weight:300; overflow-x:hidden; cursor:none; }
+
+    /* Cursor */
+    .cursor { width:8px;height:8px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transition:transform .15s ease; }
+    .cursor-ring { width:36px;height:36px;border:1px solid rgba(201,168,76,.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .2s,height .2s,border-color .2s; }
+
+    ::-webkit-scrollbar{width:3px} ::-webkit-scrollbar-track{background:var(--black)} ::-webkit-scrollbar-thumb{background:var(--gold)}
+
+    /* NAV */
+    nav { position:fixed;top:0;left:0;right:0;z-index:100;padding:28px 60px;display:flex;justify-content:space-between;align-items:center;transition:all .4s ease; }
+    nav.scrolled { background:rgba(10,10,10,.96);border-bottom:1px solid var(--border);padding:16px 60px;backdrop-filter:blur(14px); }
+    .logo { font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;letter-spacing:.18em;color:var(--white);text-decoration:none; }
+    .logo span { color:var(--gold); }
+    .nav-links { display:flex;gap:38px;list-style:none; }
+    .nav-links a { color:rgba(248,246,241,.6);text-decoration:none;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;transition:color .3s; }
+    .nav-links a:hover { color:var(--gold); }
+    .nav-cta { font-size:.63rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:10px 24px;text-decoration:none;transition:all .3s; }
+    .nav-cta:hover { background:var(--gold);color:var(--black); }
+
+    /* HERO */
+    .hero { min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 60px;position:relative;overflow:hidden; }
+    .hero-bg { position:absolute;inset:0;background:radial-gradient(ellipse 65% 65% at 80% 50%,rgba(201,168,76,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 15% 80%,rgba(201,168,76,.04) 0%,transparent 60%); }
+    .hero-grid { position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.035) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 80%); }
+
+    .hero-badge { display:inline-flex;align-items:center;gap:14px;font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:32px;opacity:0;animation:fadeUp .8s ease forwards .3s; }
+    .hero-badge::before { content:'';width:36px;height:1px;background:var(--gold); }
+
+    .hero-title { font-family:'Cormorant Garamond',serif;font-size:clamp(3.4rem,8vw,7rem);font-weight:300;line-height:1.04;letter-spacing:-.01em;margin-bottom:14px;opacity:0;animation:fadeUp .9s ease forwards .5s; }
+    .hero-title em { font-style:italic;color:var(--gold); }
+    .hero-sub { font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,6vw,5.6rem);font-weight:300;line-height:1.05;color:rgba(248,246,241,.22);margin-bottom:44px;opacity:0;animation:fadeUp .9s ease forwards .65s; }
+
+    .hero-desc { max-width:500px;font-size:.82rem;line-height:2;color:rgba(248,246,241,.52);letter-spacing:.025em;margin-bottom:52px;opacity:0;animation:fadeUp .9s ease forwards .8s; }
+
+    .hero-flags { display:flex;gap:24px;flex-wrap:wrap;margin-bottom:48px;opacity:0;animation:fadeUp .9s ease forwards .9s; }
+    .flag-pill { font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(248,246,241,.45);border:1px solid var(--border);padding:7px 16px; }
+
+    .hero-actions { display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:fadeUp .9s ease forwards 1s; }
+    .btn-primary { background:var(--gold);color:var(--black);padding:15px 38px;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all .3s;border:none;cursor:pointer; }
+    .btn-primary:hover { background:var(--gold-light);transform:translateY(-2px); }
+    .btn-ghost { color:var(--white);padding:15px 38px;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(248,246,241,.2);transition:all .3s; }
+    .btn-ghost:hover { border-color:var(--gold);color:var(--gold); }
+    .btn-wa { background:transparent;color:#25d366;padding:15px 38px;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(37,211,102,.3);transition:all .3s;display:flex;align-items:center;gap:10px; }
+    .btn-wa:hover { background:rgba(37,211,102,.08);border-color:#25d366; }
+
+    .hero-scroll { position:absolute;bottom:40px;left:60px;display:flex;align-items:center;gap:14px;font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--grey);opacity:0;animation:fadeUp 1s ease forwards 1.4s; }
+    .scroll-line { width:55px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);animation:pulse 2s ease-in-out infinite; }
+    .hero-watermark { position:absolute;right:60px;bottom:20px;font-family:'Cormorant Garamond',serif;font-size:12rem;font-weight:300;color:rgba(201,168,76,.03);line-height:1;pointer-events:none; }
+
+    /* MARQUEE */
+    .marquee-wrap { border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;overflow:hidden;background:var(--off-black); }
+    .marquee-track { display:flex;gap:56px;white-space:nowrap;animation:marquee 28s linear infinite; }
+    .marquee-item { display:flex;align-items:center;gap:20px;font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(248,246,241,.38);flex-shrink:0; }
+    .marquee-dot { width:4px;height:4px;background:var(--gold);border-radius:50%; }
+
+    /* SECTIONS */
+    section { padding:120px 60px; }
+    .section-tag { font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:14px; }
+    .section-tag::before { content:'';width:28px;height:1px;background:var(--gold); }
+    .section-title { font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,4.5vw,4rem);font-weight:300;line-height:1.15;margin-bottom:20px; }
+    .section-title em { font-style:italic;color:var(--gold); }
+
+    /* ABOUT */
+    .about { background:var(--off-black);display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center; }
+    .about-body { font-size:.82rem;line-height:2;color:rgba(248,246,241,.52);letter-spacing:.02em;margin-bottom:18px; }
+    .about-right { display:grid;grid-template-columns:1fr 1fr;gap:2px; }
+    .stat-box { background:var(--dark);padding:38px 30px;border:1px solid transparent;transition:border-color .3s;position:relative;overflow:hidden; }
+    .stat-box::before { content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s ease; }
+    .stat-box:hover { border-color:var(--border); }
+    .stat-box:hover::before { transform:scaleX(1); }
+    .stat-number { font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--gold);line-height:1;margin-bottom:8px; }
+    .stat-label { font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(248,246,241,.38); }
+
+    /* SERVICES */
+    .services { background:var(--black); }
+    .services-header { display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:72px; }
+    .services-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:2px; }
+    .service-card { background:var(--off-black);padding:50px 38px;border:1px solid transparent;transition:all .4s ease;position:relative;overflow:hidden;cursor:default; }
+    .service-card::after { content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 50% 100%,rgba(201,168,76,.06),transparent);opacity:0;transition:opacity .4s; }
+    .service-card:hover { border-color:var(--border);transform:translateY(-4px); }
+    .service-card:hover::after { opacity:1; }
+    .service-num { font-family:'Cormorant Garamond',serif;font-size:.72rem;color:var(--gold);letter-spacing:.2em;margin-bottom:14px; }
+    .service-name { font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;margin-bottom:14px;line-height:1.25; }
+    .service-desc { font-size:.76rem;line-height:1.9;color:rgba(248,246,241,.42);margin-bottom:28px; }
+    .service-tags { display:flex;flex-wrap:wrap;gap:8px; }
+    .stag { font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.2);padding:4px 12px; }
+
+    /* GLOBAL */
+    .global { background:var(--off-black);text-align:center; }
+    .global .section-tag { justify-content:center; }
+    .global .section-tag::before { display:none; }
+    .global-desc { max-width:600px;margin:0 auto 64px;font-size:.82rem;line-height:2;color:rgba(248,246,241,.45); }
+    .countries-grid { display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:60px; }
+    .country-pill { padding:12px 28px;border:1px solid var(--border);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(248,246,241,.5);transition:all .3s;display:flex;align-items:center;gap:10px; }
+    .country-pill:hover { border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.04); }
+    .country-pill span { font-size:1rem; }
+    .partnership-strip { border-top:1px solid var(--border);padding-top:48px;max-width:700px;margin:0 auto; }
+    .partnership-strip p { font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-style:italic;color:rgba(248,246,241,.55);line-height:1.6; }
+    .partnership-strip strong { color:var(--gold);font-style:normal; }
+
+    /* PROCESS */
+    .process { background:var(--black);text-align:center; }
+    .process-steps { display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:72px;position:relative; }
+    .process-steps::before { content:'';position:absolute;top:27px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,var(--border) 20%,var(--border) 80%,transparent); }
+    .process-step { padding:0 28px; }
+    .step-circle { width:54px;height:54px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--gold);background:var(--black);position:relative;z-index:1;transition:all .3s; }
+    .process-step:hover .step-circle { background:var(--gold);color:var(--black);border-color:var(--gold); }
+    .step-title { font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;margin-bottom:12px; }
+    .step-desc { font-size:.74rem;line-height:1.85;color:rgba(248,246,241,.38); }
+
+    /* TESTIMONIALS */
+    .testimonials { background:var(--off-black); }
+    .testi-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:64px; }
+    .testi-card { background:var(--dark);padding:48px 36px;border:1px solid transparent;transition:border-color .3s;position:relative; }
+    .testi-card:hover { border-color:var(--border); }
+    .testi-quote { font-size:3rem;font-family:'Cormorant Garamond',serif;color:var(--gold);opacity:.2;line-height:1;margin-bottom:8px; }
+    .testi-text { font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;line-height:1.7;color:rgba(248,246,241,.8);margin-bottom:32px; }
+    .testi-author strong { display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:4px; }
+    .testi-author span { font-size:.7rem;color:rgba(248,246,241,.38);letter-spacing:.05em; }
+    .testi-stars { display:flex;gap:4px;margin-bottom:20px; }
+    .star { color:var(--gold);font-size:.7rem; }
+
+    /* DISCOVERY */
+    .discovery { background:var(--black);display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start; }
+    .discovery-left .section-title { margin-bottom:20px; }
+    .discovery-left p { font-size:.82rem;line-height:2;color:rgba(248,246,241,.48);margin-bottom:32px; }
+    .discovery-options { display:flex;flex-direction:column;gap:16px;margin-top:8px; }
+    .discovery-option { display:flex;align-items:flex-start;gap:20px;padding:24px;border:1px solid var(--border);transition:all .3s;text-decoration:none;color:var(--white); }
+    .discovery-option:hover { border-color:var(--gold);background:rgba(201,168,76,.03); }
+    .dopt-icon { font-size:1.4rem;flex-shrink:0;margin-top:2px; }
+    .dopt-title { font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:500; }
+    .dopt-desc { font-size:.75rem;line-height:1.7;color:rgba(248,246,241,.45); }
+
+    /* Discovery Form */
+    .disc-form { background:var(--off-black);border:1px solid var(--border);padding:52px 44px; }
+    .disc-form h3 { font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:8px; }
+    .disc-form p { font-size:.75rem;color:rgba(248,246,241,.4);margin-bottom:36px;line-height:1.7; }
+    .form-row { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width:100%;background:var(--dark);border:1px solid rgba(248,246,241,.1);color:var(--white);
+      padding:13px 16px;font-family:'Montserrat',sans-serif;font-size:.78rem;font-weight:300;
+      outline:none;transition:border-color .3s;appearance:none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--gold); }
+    .form-group select option { background:var(--dark); }
+    .form-group textarea { resize:vertical;min-height:90px; }
+    .form-submit { width:100%;background:var(--gold);color:var(--black);border:none;padding:15px;font-family:'Montserrat',sans-serif;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .3s;margin-top:8px; }
+    .form-submit:hover { background:var(--gold-light); }
+    .form-note { font-size:.65rem;color:rgba(248,246,241,.3);text-align:center;margin-top:14px;letter-spacing:.05em; }
+
+    /* CTA BANNER */
+    .cta-section { background:var(--off-black);padding:140px 60px;text-align:center;position:relative;overflow:hidden; }
+    .cta-section::before { content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 70% at 50% 50%,rgba(201,168,76,.07),transparent); }
+    .cta-title { font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,6vw,5.2rem);font-weight:300;line-height:1.1;margin-bottom:22px;position:relative;z-index:1; }
+    .cta-desc { font-size:.82rem;color:rgba(248,246,241,.42);margin-bottom:48px;letter-spacing:.03em;position:relative;z-index:1; }
+    .cta-actions { display:flex;justify-content:center;gap:16px;flex-wrap:wrap;position:relative;z-index:1; }
+
+    /* FOOTER */
+    footer { background:var(--off-black);padding:80px 60px 40px;border-top:1px solid var(--border); }
+    .footer-top { display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px; }
+    .footer-brand .logo { display:block;margin-bottom:18px;font-size:1.3rem; }
+    .footer-brand p { font-size:.76rem;line-height:1.85;color:rgba(248,246,241,.36); }
+    .footer-col h4 { font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:22px; }
+    .footer-col ul { list-style:none; }
+    .footer-col ul li { margin-bottom:11px; }
+    .footer-col ul li a { font-size:.76rem;color:rgba(248,246,241,.38);text-decoration:none;transition:color .3s;letter-spacing:.03em; }
+    .footer-col ul li a:hover { color:var(--gold); }
+    .footer-bottom { border-top:1px solid var(--border);padding-top:30px;display:flex;justify-content:space-between;align-items:center; }
+    .footer-copy { font-size:.65rem;color:rgba(248,246,241,.28);letter-spacing:.08em; }
+    .footer-tagline { font-family:'Cormorant Garamond',serif;font-size:.88rem;font-style:italic;color:rgba(201,168,76,.5); }
+
+    .gold-divider { height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+
+    /* CALENDAR POPUP */
+    .popup-overlay { position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px); }
+    .popup-overlay.active { display:flex; }
+    .popup-box { background:var(--off-black);border:1px solid var(--border);max-width:560px;width:90%;padding:56px 48px;position:relative;animation:popIn .35s ease; }
+    @keyframes popIn { from{opacity:0;transform:scale(.95) translateY(20px)} to{opacity:1;transform:scale(1) translateY(0)} }
+    .popup-close { position:absolute;top:20px;right:24px;background:none;border:none;color:rgba(248,246,241,.4);font-size:1.4rem;cursor:pointer;transition:color .3s;line-height:1; }
+    .popup-close:hover { color:var(--gold); }
+    .popup-tag { font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:16px; }
+    .popup-title { font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;line-height:1.2;margin-bottom:12px; }
+    .popup-desc { font-size:.78rem;line-height:1.85;color:rgba(248,246,241,.45);margin-bottom:36px; }
+    .popup-detail { display:flex;align-items:center;gap:12px;font-size:.72rem;color:rgba(248,246,241,.45);margin-bottom:10px; }
+    .popup-detail strong { color:var(--gold); }
+    .popup-actions { display:flex;flex-direction:column;gap:12px;margin-top:32px; }
+    .popup-actions .btn-primary { text-align:center; }
+    .popup-actions .btn-wa { justify-content:center; }
+
+    /* WHATSAPP FLOAT */
+    .wa-float { position:fixed;bottom:32px;right:32px;z-index:500;background:#25d366;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.3);transition:transform .3s,box-shadow .3s; }
+    .wa-float:hover { transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.45); }
+    .wa-float svg { width:26px;height:26px;fill:#fff; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+    .reveal { opacity:0;transform:translateY(36px);transition:opacity .8s ease,transform .8s ease; }
+    .reveal.visible { opacity:1;transform:translateY(0); }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/923330404678" target="_blank" class="wa-float" title="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- CALENDAR POPUP -->
+<div class="popup-overlay" id="calPopup">
+  <div class="popup-box">
+    <button class="popup-close" onclick="closePopup()">✕</button>
+    <div class="popup-tag">Free Session · 30 Minutes</div>
+    <h2 class="popup-title">Corporate Strategy<br>Discovery Call</h2>
+    <p class="popup-desc">Book a complimentary 30-minute session with our advisory team. We'll assess your needs and map out a strategic path forward — no commitment required.</p>
+    <div class="popup-detail"><strong>⏱</strong> 30 minutes · Google Meet</div>
+    <div class="popup-detail"><strong>🌐</strong> Available globally across all time zones</div>
+    <div class="popup-detail"><strong>✦</strong> No obligation · Completely confidential</div>
+    <div class="popup-actions">
+      <a href="https://calendar.app.google/j9UbJ9iZQveMzszq8" target="_blank" class="btn-primary">Book on Google Calendar</a>
+      <a href="https://wa.me/923330404678?text=Hi%20Arkiv%20Advisory%2C%20I%27d%20like%20to%20book%20a%20free%2030-min%20discovery%20call." target="_blank" class="btn-wa">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Message us on WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">ARKIV <span>ADVISORY</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#global">Global</a></li>
+    <li><a href="#discovery">Contact</a></li>
+  </ul>
+  <a href="#" class="nav-cta" onclick="openPopup();return false;">Free Strategy Call</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge">Global Business & Financial Consultancy</div>
+  <h1 class="hero-title">Your finances.<br><em>Every country.</em></h1>
+  <h2 class="hero-sub">One trusted partner.</h2>
+  <p class="hero-desc">Arkiv Advisory is a one-stop consultancy for small and mid-size businesses operating across borders. Strategic advisory, tax planning, accounting, compliance and reporting — all managed under one roof, globally.</p>
+  <div class="hero-flags">
+    <div class="flag-pill">🇺🇸 United States</div>
+    <div class="flag-pill">🇬🇧 United Kingdom</div>
+    <div class="flag-pill">🇦🇪 UAE</div>
+    <div class="flag-pill">🇦🇺 Australia</div>
+    <div class="flag-pill">🇳🇿 New Zealand</div>
+    <div class="flag-pill">🇵🇰 Pakistan</div>
+    <div class="flag-pill">+ More</div>
+  </div>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary" onclick="openPopup();return false;">Book Free Discovery Call</a>
+    <a href="#services" class="btn-ghost">Our Services</a>
+    <a href="https://wa.me/923330404678" target="_blank" class="btn-wa">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat with us
+    </a>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div>Scroll to explore</div>
+  <div class="hero-watermark">A</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><span>Strategic Consultancy</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Tax Planning</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Multi-Country Accounting</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Financial Management</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Compliance Management</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Management Reporting</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Global Partnerships</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Business Advisory</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Strategic Consultancy</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Tax Planning</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Multi-Country Accounting</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Financial Management</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Compliance Management</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Management Reporting</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Global Partnerships</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Business Advisory</span><div class="marquee-dot"></div></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-left reveal">
+    <div class="section-tag">Who We Are</div>
+    <h2 class="section-title">Built for businesses<br>that <em>cross borders.</em></h2>
+    <p class="about-body">Most small businesses expanding globally face the same problem: they can't afford a finance director, a tax specialist, a compliance officer, and an accountant in every country they operate in.</p>
+    <p class="about-body">Arkiv Advisory exists to solve that. We provide the full financial infrastructure of a large enterprise — to businesses of any size, across any number of countries.</p>
+    <p class="about-body">With active teams in the US and Pakistan and a network of global partner firms, we deliver seamless, integrated financial management wherever you do business.</p>
+  </div>
+  <div class="about-right reveal">
+    <div class="stat-box"><div class="stat-number">6+</div><div class="stat-label">Countries Served</div></div>
+    <div class="stat-box"><div class="stat-number">360°</div><div class="stat-label">Financial Coverage</div></div>
+    <div class="stat-box"><div class="stat-number">US & PK</div><div class="stat-label">Core Teams</div></div>
+    <div class="stat-box"><div class="stat-number">1</div><div class="stat-label">Firm. Every Solution.</div></div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header reveal">
+    <div>
+      <div class="section-tag">What We Do</div>
+      <h2 class="section-title">One firm.<br><em>Every solution.</em></h2>
+    </div>
+    <p style="max-width:300px;font-size:.78rem;line-height:1.95;color:rgba(248,246,241,.38);">Everything your business needs to operate financially — across every market you're in.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <div class="service-name">Strategic Business Consultancy</div>
+      <p class="service-desc">Business planning, feasibility, market entry strategy, and growth advisory. We help you build on solid foundations and scale intelligently across new markets.</p>
+      <div class="service-tags"><span class="stag">Planning</span><span class="stag">Strategy</span><span class="stag">Market Entry</span></div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">02</div>
+      <div class="service-name">Tax Planning & Management</div>
+      <p class="service-desc">Multi-jurisdiction tax structuring, optimization, and filing. We navigate complex international tax frameworks so you stay compliant and tax-efficient everywhere.</p>
+      <div class="service-tags"><span class="stag">Multi-Country</span><span class="stag">Optimization</span><span class="stag">Filing</span></div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">03</div>
+      <div class="service-name">Financial Management</div>
+      <p class="service-desc">Cash flow management, financial planning, budgeting, and forecasting. We give you the financial clarity and control to make confident business decisions.</p>
+      <div class="service-tags"><span class="stag">Cash Flow</span><span class="stag">Forecasting</span><span class="stag">Budgeting</span></div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">04</div>
+      <div class="service-name">Multi-Country Bookkeeping</div>
+      <p class="service-desc">Accurate, timely books maintained across multiple countries and currencies. One consolidated view of your global financial position — always clean, always current.</p>
+      <div class="service-tags"><span class="stag">Multi-Currency</span><span class="stag">Consolidated</span><span class="stag">Real-time</span></div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">05</div>
+      <div class="service-name">Compliance Management</div>
+      <p class="service-desc">Company registrations, regulatory filings, statutory requirements — managed across all your operating jurisdictions so nothing slips through the cracks.</p>
+      <div class="service-tags"><span class="stag">Regulatory</span><span class="stag">Filings</span><span class="stag">Global</span></div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">06</div>
+      <div class="service-name">Management Reporting</div>
+      <p class="service-desc">Board-ready financial reports, KPI dashboards, and management accounts that give decision-makers a clear, consolidated picture of business performance.</p>
+      <div class="service-tags"><span class="stag">Dashboards</span><span class="stag">KPIs</span><span class="stag">Board Reports</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- GLOBAL -->
+<section class="global" id="global">
+  <div class="reveal">
+    <div class="section-tag">Our Reach</div>
+    <h2 class="section-title">Global coverage.<br><em>Local expertise.</em></h2>
+    <p class="global-desc">We serve businesses and expatriate entrepreneurs operating across English-speaking markets worldwide. Wherever you are, wherever your business operates — we're already there.</p>
+  </div>
+  <div class="countries-grid reveal">
+    <div class="country-pill"><span>🇺🇸</span> United States</div>
+    <div class="country-pill"><span>🇬🇧</span> United Kingdom</div>
+    <div class="country-pill"><span>🇦🇪</span> UAE</div>
+    <div class="country-pill"><span>🇦🇺</span> Australia</div>
+    <div class="country-pill"><span>🇳🇿</span> New Zealand</div>
+    <div class="country-pill"><span>🇵🇰</span> Pakistan</div>
+    <div class="country-pill"><span>🌐</span> And beyond</div>
+  </div>
+  <div class="partnership-strip reveal">
+    <p>Our global network of <strong>partner firms</strong> means we bring deep local regulatory knowledge to every jurisdiction — so you're never navigating a new market alone.</p>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="reveal">
+    <div class="section-tag" style="justify-content:center;"><span style="width:28px;height:1px;background:var(--gold);display:inline-block;"></span>&nbsp; How We Work</div>
+    <h2 class="section-title" style="margin-top:0;">Our <em>process.</em></h2>
+  </div>
+  <div class="process-steps">
+    <div class="process-step reveal">
+      <div class="step-circle">01</div>
+      <div class="step-title">Discovery</div>
+      <p class="step-desc">We start with a free 30-minute call to understand your business, goals, and the markets you operate in.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-circle">02</div>
+      <div class="step-title">Assessment</div>
+      <p class="step-desc">Our team maps your current financial setup, compliance status, and cross-border requirements.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-circle">03</div>
+      <div class="step-title">Strategy</div>
+      <p class="step-desc">We design a tailored financial framework — structured for efficiency, compliance, and growth.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-circle">04</div>
+      <div class="step-title">Execution</div>
+      <p class="step-desc">We handle everything ongoing — reporting monthly, filing on time, advising proactively.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="reveal">
+    <div class="section-tag">Client Stories</div>
+    <h2 class="section-title">Trusted by businesses<br><em>across the globe.</em></h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <div class="testi-quote">"</div>
+      <p class="testi-text">Arkiv solved a problem we'd been struggling with for years — managing books across three countries with one coherent financial view. Game-changing for our team.</p>
+      <div class="testi-author"><strong>James H.</strong><span>E-commerce Founder · United Kingdom</span></div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <div class="testi-quote">"</div>
+      <p class="testi-text">As a Pakistani entrepreneur with operations in the UAE and US, finding one firm that truly understands all three markets felt impossible — until we found Arkiv.</p>
+      <div class="testi-author"><strong>Sana M.</strong><span>Tech Startup CEO · UAE / Pakistan</span></div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <div class="testi-quote">"</div>
+      <p class="testi-text">The free discovery call alone gave us more clarity than months of trying to figure out our cross-border tax situation. Highly professional, deeply knowledgeable team.</p>
+      <div class="testi-author"><strong>David R.</strong><span>Consulting Director · Australia</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- DISCOVERY -->
+<section class="discovery" id="discovery">
+  <div class="discovery-left reveal">
+    <div class="section-tag">Get Started</div>
+    <h2 class="section-title">Let's talk about<br>your <em>business.</em></h2>
+    <p>Tell us about your business and we'll be in touch within one business day. Or choose how you'd like to connect with us directly.</p>
+    <div class="discovery-options">
+      <a href="#" class="discovery-option" onclick="openPopup();return false;">
+        <div class="dopt-icon">📅</div>
+        <div>
+          <div class="dopt-title">Free 30-Min Strategy Call</div>
+          <div class="dopt-desc">Book a complimentary corporate advisory session via Google Meet. Available across all time zones.</div>
+        </div>
+      </a>
+      <a href="https://wa.me/923330404678?text=Hi%20Arkiv%20Advisory%2C%20I%27d%20like%20to%20discuss%20my%20business%20needs." target="_blank" class="discovery-option">
+        <div class="dopt-icon" style="color:#25d366">💬</div>
+        <div>
+          <div class="dopt-title">WhatsApp — Instant Response</div>
+          <div class="dopt-desc">Message us directly. Our AI-assisted team responds around the clock to answer your questions.</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="disc-form reveal">
+    <h3>Send us a message</h3>
+    <p>Complete the form below and we'll get back to you within 24 hours.</p>
+    <div class="form-row">
+      <div class="form-group"><label>First Name</label><input type="text" placeholder="John"/></div>
+      <div class="form-group"><label>Last Name</label><input type="text" placeholder="Smith"/></div>
+    </div>
+    <div class="form-group"><label>Email Address</label><input type="email" placeholder="john@company.com"/></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Country of Operation</label>
+        <select>
+          <option value="">Select country</option>
+          <option>United States</option>
+          <option>United Kingdom</option>
+          <option>UAE</option>
+          <option>Australia</option>
+          <option>New Zealand</option>
+          <option>Pakistan</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Service Needed</label>
+        <select>
+          <option value="">Select service</option>
+          <option>Strategic Consultancy</option>
+          <option>Tax Planning</option>
+          <option>Financial Management</option>
+          <option>Multi-Country Accounting</option>
+          <option>Compliance Management</option>
+          <option>Management Reporting</option>
+          <option>Full Package</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>Tell us about your business</label><textarea placeholder="Briefly describe your business, how many countries you operate in, and what challenges you're facing…"></textarea></div>
+    <button class="form-submit" onclick="handleSubmit(event)">Send Message →</button>
+    <p class="form-note">All enquiries are treated with complete confidentiality.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-title reveal">Stop managing<br><em>financial chaos.</em><br>Start growing.</h2>
+  <p class="cta-desc reveal">Book your free 30-minute corporate strategy session. No cost, no commitment — just clarity.</p>
+  <div class="cta-actions reveal">
+    <a href="#" class="btn-primary" onclick="openPopup();return false;">Book Free Discovery Call</a>
+    <a href="https://wa.me/923330404678" target="_blank" class="btn-wa">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="logo">ARKIV <span style="color:var(--gold)">ADVISORY</span></a>
+      <p>Global business and financial consultancy for companies operating across borders. One firm. Every solution. Every country.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Strategic Consultancy</a></li>
+        <li><a href="#services">Tax Planning</a></li>
+        <li><a href="#services">Financial Management</a></li>
+        <li><a href="#services">Multi-Country Accounting</a></li>
+        <li><a href="#services">Compliance Management</a></li>
+        <li><a href="#services">Management Reporting</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Markets</h4>
+      <ul>
+        <li><a href="#global">United States</a></li>
+        <li><a href="#global">United Kingdom</a></li>
+        <li><a href="#global">UAE</a></li>
+        <li><a href="#global">Australia</a></li>
+        <li><a href="#global">New Zealand</a></li>
+        <li><a href="#global">Pakistan</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#" onclick="openPopup();return false;">Book a Free Call</a></li>
+        <li><a href="https://wa.me/923330404678" target="_blank">WhatsApp</a></li>
+        <li><a href="#discovery">Send a Message</a></li>
+        <li><a href="mailto:info@arkivadvisory.com">info@arkivadvisory.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2024 Arkiv Advisory. All rights reserved.</div>
+    <div class="footer-tagline">Structured Thinking. Smarter Futures.</div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    cursor.style.transform=`translate(${mx-4}px,${my-4}px)`;
+  });
+  (function animateRing(){
+    rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+    ring.style.transform=`translate(${rx-18}px,${ry-18}px)`;
+    requestAnimationFrame(animateRing);
+  })();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='54px';ring.style.height='54px';ring.style.borderColor='rgba(201,168,76,.8)';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(201,168,76,.5)';});
+  });
+
+  // Sticky nav
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+
+  // Scroll reveal
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*70);observer.unobserve(e.target);}
+    });
+  },{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+  // Popup
+  function openPopup(){ document.getElementById('calPopup').classList.add('active'); document.body.style.overflow='hidden'; }
+  function closePopup(){ document.getElementById('calPopup').classList.remove('active'); document.body.style.overflow=''; }
+  document.getElementById('calPopup').addEventListener('click',function(e){ if(e.target===this) closePopup(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePopup(); });
+
+  // Form
+  function handleSubmit(e){
+    e.preventDefault();
+    const btn=e.target;
+    btn.textContent='Message Sent ✓';
+    btn.style.background='#2a6';
+    btn.style.color='#fff';
+    setTimeout(()=>{ btn.textContent='Send Message →'; btn.style.background=''; btn.style.color=''; },3000);
+  }
+</script>
+</body>
+</html>
