@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Arkiv Advisory — Structured Thinking. Smarter Futures.</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+--black: #0a0a0a;
+--off-black: #111111;
+--dark: #1a1a1a;
+--gold: #c9a84c;
+--gold-light: #e4c97e;
+--gold-pale: #f5e6c0;
+--white: #f8f6f1;
+--grey: #888;
+--border: rgba(201, 168, 76, 0.25);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+background: var(--black);
+color: var(--white);
+font-family: 'Montserrat', sans-serif;
+font-weight: 300;
+overflow-x: hidden;
+cursor: none;
+}
+
+/* Custom cursor */
+.cursor {
+width: 8px; height: 8px;
+background: var(--gold);
+border-radius: 50%;
+position: fixed;
+top: 0; left: 0;
+pointer-events: none;
+z-index: 9999;
+transition: transform 0.15s ease;
+}
+.cursor-ring {
+width: 36px; height: 36px;
+border: 1px solid rgba(201,168,76,0.5);
+border-radius: 50%;
+position: fixed;
+top: 0; left: 0;
+pointer-events: none;
+z-index: 9998;
+transition: transform 0.08s ease, width 0.2s, height 0.2s, border-color 0.2s;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold); }
+
+/* NAV */
+nav {
+position: fixed; top: 0; left: 0; right: 0;
+z-index: 100;
+padding: 28px 60px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-bottom: 1px solid transparent;
+transition: all 0.4s ease;
+}
+nav.scrolled {
+background: rgba(10,10,10,0.95);
+border-color: var(--border);
+padding: 18px 60px;
+backdrop-filter: blur(12px);
+}
+
+.logo {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.6rem;
+font-weight: 300;
+letter-spacing: 0.15em;
+color: var(--white);
+text-decoration: none;
+}
+.logo span { color: var(--gold); }
+
+.nav-links {
+display: flex;
+gap: 40px;
+list-style: none;
+}
+.nav-links a {
+color: rgba(248,246,241,0.65);
+text-decoration: none;
+font-size: 0.7rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+.nav-cta {
+font-size: 0.65rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(--gold);
+border: 1px solid var(--border);
+padding: 10px 24px;
+text-decoration: none;
+transition: all 0.3s;
+}
+.nav-cta:hover {
+background: var(--gold);
+color: var(--black);
+}
+
+/* HERO */
+.hero {
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding: 0 60px;
+position: relative;
+overflow: hidden;
+}
+
+.hero-bg {
+position: absolute;
+inset: 0;
+background:
+radial-gradient(ellipse 60% 60% at 80% 50%, rgba(201,168,76,0.06) 0%, transparent 70%),
+radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,168,76,0.04) 0%, transparent 60%);
+}
+
+.hero-lines {
+position: absolute;
+inset: 0;
+background-image:
+linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+background-size: 80px 80px;
+mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+}
+
+.hero-tag {
+font-size: 0.65rem;
+letter-spacing: 0.35em;
+text-transform: uppercase;
+color: var(--gold);
+margin-bottom: 32px;
+display: flex;
+align-items: center;
+gap: 16px;
+opacity: 0;
+animation: fadeUp 0.8s ease forwards 0.3s;
+}
+.hero-tag::before {
+content: '';
+width: 40px; height: 1px;
+background: var(--gold);
+}
+
+.hero-title {
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(3.5rem, 8vw, 7rem);
+font-weight: 300;
+line-height: 1.05;
+letter-spacing: -0.01em;
+margin-bottom: 16px;
+opacity: 0;
+animation: fadeUp 0.9s ease forwards 0.5s;
+}
+.hero-title em {
+font-style: italic;
+color: var(--gold);
+}
+
+.hero-subtitle {
+font-size: clamp(3rem, 6.5vw, 5.8rem);
+font-family: 'Cormorant Garamond', serif;
+font-weight: 300;
+line-height: 1.05;
+color: rgba(248,246,241,0.25);
+margin-bottom: 48px;
+opacity: 0;
+animation: fadeUp 0.9s ease forwards 0.65s;
+}
+
+.hero-desc {
+max-width: 480px;
+font-size: 0.82rem;
+line-height: 1.9;
+color: rgba(248,246,241,0.55);
+letter-spacing: 0.03em;
+margin-bottom: 56px;
+opacity: 0;
+animation: fadeUp 0.9s ease forwards 0.8s;
+}
+
+.hero-actions {
+display: flex;
+gap: 20px;
+align-items: center;
+opacity: 0;
+animation: fadeUp 0.9s ease forwards 0.95s;
+}
+
+.btn-primary {
+background: var(--gold);
+color: var(--black);
+padding: 16px 40px;
+font-size: 0.7rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+text-decoration: none;
+font-weight: 500;
+transition: all 0.3s;
+}
+.btn-primary:hover {
+background: var(--gold-light);
+transform: translateY(-2px);
+}
+
+.btn-ghost {
+color: var(--white);
+padding: 16px 40px;
+font-size: 0.7rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+text-decoration: none;
+border: 1px solid rgba(248,246,241,0.2);
+transition: all 0.3s;
+}
+.btn-ghost:hover {
+border-color: var(--gold);
+color: var(--gold);
+}
+
+.hero-scroll {
+position: absolute;
+bottom: 40px;
+left: 60px;
+display: flex;
+align-items: center;
+gap: 16px;
+font-size: 0.6rem;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+color: var(--grey);
+opacity: 0;
+animation: fadeUp 1s ease forwards 1.3s;
+}
+.scroll-line {
+width: 60px; height: 1px;
+background: linear-gradient(90deg, var(--gold), transparent);
+animation: scrollPulse 2s ease-in-out infinite;
+}
+
+.hero-number {
+position: absolute;
+right: 60px;
+bottom: 40px;
+font-family: 'Cormorant Garamond', serif;
+font-size: 10rem;
+font-weight: 300;
+color: rgba(201,168,76,0.04);
+line-height: 1;
+pointer-events: none;
+}
+
+/* MARQUEE */
+.marquee-wrap {
+border-top: 1px solid var(--border);
+border-bottom: 1px solid var(--border);
+padding: 18px 0;
+overflow: hidden;
+background: var(--off-black);
+}
+.marquee-track {
+display: flex;
+gap: 60px;
+white-space: nowrap;
+animation: marquee 25s linear infinite;
+}
+.marquee-item {
+display: flex;
+align-items: center;
+gap: 20px;
+font-size: 0.65rem;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: rgba(248,246,241,0.4);
+flex-shrink: 0;
+}
+.marquee-dot {
+width: 4px; height: 4px;
+background: var(--gold);
+border-radius: 50%;
+}
+
+/* SECTIONS COMMON */
+section { padding: 120px 60px; }
+
+.section-tag {
+font-size: 0.6rem;
+letter-spacing: 0.35em;
+text-transform: uppercase;
+color: var(--gold);
+margin-bottom: 24px;
+display: flex;
+align-items: center;
+gap: 14px;
+}
+.section-tag::before {
+content: '';
+width: 30px; height: 1px;
+background: var(--gold);
+}
+
+.section-title {
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(2.5rem, 5vw, 4.2rem);
+font-weight: 300;
+line-height: 1.15;
+margin-bottom: 20px;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+
+/* ABOUT */
+.about {
+background: var(--off-black);
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 100px;
+align-items: center;
+}
+
+.about-left .section-title { margin-bottom: 32px; }
+
+.about-body {
+font-size: 0.83rem;
+line-height: 2;
+color: rgba(248,246,241,0.55);
+letter-spacing: 0.02em;
+margin-bottom: 20px;
+}
+
+.about-right {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 2px;
+}
+
+.stat-box {
+background: var(--dark);
+padding: 40px 32px;
+border: 1px solid transparent;
+transition: border-color 0.3s;
+position: relative;
+overflow: hidden;
+}
+.stat-box::before {
+content: '';
+position: absolute;
+top: 0; left: 0;
+width: 100%; height: 2px;
+background: linear-gradient(90deg, var(--gold), transparent);
+transform: scaleX(0);
+transform-origin: left;
+transition: transform 0.4s ease;
+}
+.stat-box:hover { border-color: var(--border); }
+.stat-box:hover::before { transform: scaleX(1); }
+
+.stat-number {
+font-family: 'Cormorant Garamond', serif;
+font-size: 3rem;
+font-weight: 300;
+color: var(--gold);
+line-height: 1;
+margin-bottom: 8px;
+}
+.stat-label {
+font-size: 0.65rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: rgba(248,246,241,0.4);
+}
+
+/* SERVICES */
+.services { background: var(--black); }
+
+.services-header {
+display: flex;
+justify-content: space-between;
+align-items: flex-end;
+margin-bottom: 80px;
+}
+
+.services-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 2px;
+}
+
+.service-card {
+background: var(--off-black);
+padding: 52px 40px;
+border: 1px solid transparent;
+transition: all 0.4s ease;
+position: relative;
+overflow: hidden;
+cursor: default;
+}
+.service-card::after {
+content: '';
+position: absolute;
+inset: 0;
+background: radial-gradient(ellipse 80% 80% at 50% 100%, rgba(201,168,76,0.06), transparent);
+opacity: 0;
+transition: opacity 0.4s;
+}
+.service-card:hover { border-color: var(--border); transform: translateY(-4px); }
+.service-card:hover::after { opacity: 1; }
+
+.service-icon {
+font-size: 1.8rem;
+margin-bottom: 28px;
+display: block;
+}
+
+.service-num {
+font-family: 'Cormorant Garamond', serif;
+font-size: 0.75rem;
+color: var(--gold);
+letter-spacing: 0.2em;
+margin-bottom: 16px;
+}
+
+.service-name {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.6rem;
+font-weight: 300;
+margin-bottom: 16px;
+line-height: 1.2;
+}
+
+.service-desc {
+font-size: 0.78rem;
+line-height: 1.85;
+color: rgba(248,246,241,0.45);
+margin-bottom: 32px;
+}
+
+.service-link {
+font-size: 0.65rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(--gold);
+text-decoration: none;
+display: flex;
+align-items: center;
+gap: 10px;
+transition: gap 0.3s;
+}
+.service-link::after { content: '→'; }
+.service-card:hover .service-link { gap: 16px; }
+
+/* PROCESS */
+.process {
+background: var(--off-black);
+position: relative;
+}
+
+.process-steps {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 0;
+margin-top: 80px;
+position: relative;
+}
+.process-steps::before {
+content: '';
+position: absolute;
+top: 28px;
+left: 10%;
+right: 10%;
+height: 1px;
+background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+}
+
+.process-step {
+padding: 0 32px;
+text-align: center;
+}
+
+.step-circle {
+width: 56px; height: 56px;
+border: 1px solid var(--border);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 0 auto 32px;
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.2rem;
+color: var(--gold);
+background: var(--off-black);
+position: relative;
+z-index: 1;
+transition: all 0.3s;
+}
+.process-step:hover .step-circle {
+background: var(--gold);
+color: var(--black);
+border-color: var(--gold);
+}
+
+.step-title {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.3rem;
+font-weight: 400;
+margin-bottom: 12px;
+}
+
+.step-desc {
+font-size: 0.75rem;
+line-height: 1.8;
+color: rgba(248,246,241,0.4);
+}
+
+/* WHY US */
+.why {
+background: var(--black);
+display: grid;
+grid-template-columns: 1fr 1.4fr;
+gap: 100px;
+align-items: start;
+}
+
+.why-list {
+list-style: none;
+margin-top: 48px;
+}
+.why-list li {
+padding: 24px 0;
+border-bottom: 1px solid var(--border);
+display: flex;
+gap: 20px;
+align-items: flex-start;
+transition: padding-left 0.3s;
+}
+.why-list li:hover { padding-left: 8px; }
+.why-list li:first-child { border-top: 1px solid var(--border); }
+
+.why-check {
+color: var(--gold);
+font-size: 0.8rem;
+margin-top: 2px;
+flex-shrink: 0;
+}
+.why-text strong {
+display: block;
+font-size: 0.82rem;
+font-weight: 500;
+letter-spacing: 0.05em;
+margin-bottom: 4px;
+color: var(--white);
+}
+.why-text span {
+font-size: 0.76rem;
+color: rgba(248,246,241,0.4);
+line-height: 1.7;
+}
+
+.why-right {
+background: var(--off-black);
+border: 1px solid var(--border);
+padding: 60px;
+position: relative;
+}
+.why-right::before {
+content: '"';
+font-family: 'Cormorant Garamond', serif;
+font-size: 8rem;
+color: var(--gold);
+opacity: 0.15;
+position: absolute;
+top: 20px;
+left: 40px;
+line-height: 1;
+}
+
+.quote-text {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.8rem;
+font-weight: 300;
+line-height: 1.5;
+font-style: italic;
+margin-bottom: 32px;
+margin-top: 40px;
+position: relative;
+z-index: 1;
+}
+
+.quote-author {
+font-size: 0.65rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(--gold);
+}
+
+/* INDUSTRIES */
+.industries {
+background: var(--off-black);
+text-align: center;
+}
+
+.industries .section-tag { justify-content: center; }
+.industries .section-tag::before { display: none; }
+
+.industries-grid {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 12px;
+margin-top: 60px;
+}
+
+.industry-pill {
+padding: 12px 28px;
+border: 1px solid var(--border);
+font-size: 0.7rem;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: rgba(248,246,241,0.5);
+transition: all 0.3s;
+}
+.industry-pill:hover {
+border-color: var(--gold);
+color: var(--gold);
+background: rgba(201,168,76,0.04);
+}
+
+/* CTA */
+.cta-section {
+background: var(--black);
+padding: 140px 60px;
+text-align: center;
+position: relative;
+overflow: hidden;
+}
+.cta-section::before {
+content: '';
+position: absolute;
+inset: 0;
+background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(201,168,76,0.07), transparent);
+}
+
+.cta-title {
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(3rem, 6vw, 5.5rem);
+font-weight: 300;
+line-height: 1.1;
+margin-bottom: 24px;
+position: relative;
+z-index: 1;
+}
+
+.cta-desc {
+font-size: 0.83rem;
+color: rgba(248,246,241,0.45);
+margin-bottom: 48px;
+letter-spacing: 0.03em;
+position: relative;
+z-index: 1;
+}
+
+.cta-actions {
+display: flex;
+justify-content: center;
+gap: 20px;
+position: relative;
+z-index: 1;
+}
+
+/* CONTACT STRIP */
+.contact-strip {
+background: var(--gold);
+padding: 40px 60px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.contact-strip-text {
+font-size: 0.65rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(--black);
+font-weight: 600;
+}
+
+.contact-strip-items {
+display: flex;
+gap: 50px;
+}
+
+.contact-item {
+display: flex;
+align-items: center;
+gap: 12px;
+font-size: 0.75rem;
+color: rgba(10,10,10,0.7);
+}
+.contact-item strong {
+color: var(--black);
+font-weight: 600;
+display: block;
+font-size: 0.7rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+}
+
+/* FOOTER */
+footer {
+background: var(--off-black);
+padding: 80px 60px 40px;
+border-top: 1px solid var(--border);
+}
+
+.footer-top {
+display: grid;
+grid-template-columns: 1.5fr 1fr 1fr 1fr;
+gap: 60px;
+margin-bottom: 60px;
+}
+
+.footer-brand .logo {
+display: block;
+margin-bottom: 20px;
+font-size: 1.4rem;
+}
+.footer-brand p {
+font-size: 0.78rem;
+line-height: 1.8;
+color: rgba(248,246,241,0.4);
+}
+
+.footer-col h4 {
+font-size: 0.6rem;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+color: var(--gold);
+margin-bottom: 24px;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li {
+margin-bottom: 12px;
+}
+.footer-col ul li a {
+font-size: 0.78rem;
+color: rgba(248,246,241,0.4);
+text-decoration: none;
+transition: color 0.3s;
+letter-spacing: 0.03em;
+}
+.footer-col ul li a:hover { color: var(--gold); }
+
+.footer-bottom {
+border-top: 1px solid var(--border);
+padding-top: 32px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.footer-copy {
+font-size: 0.68rem;
+color: rgba(248,246,241,0.3);
+letter-spacing: 0.1em;
+}
+
+.footer-tagline {
+font-family: 'Cormorant Garamond', serif;
+font-size: 0.9rem;
+font-style: italic;
+color: rgba(201,168,76,0.6);
+}
+
+/* DIVIDER */
+.gold-divider {
+height: 1px;
+background: linear-gradient(90deg, transparent, var(--gold), transparent);
+margin: 0;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(30px); }
+to { opacity: 1; transform: translateY(0); }
+}
+@keyframes marquee {
+0% { transform: translateX(0); }
+100% { transform: translateX(-50%); }
+}
+@keyframes scrollPulse {
+0%, 100% { opacity: 0.4; }
+50% { opacity: 1; }
+}
+
+/* REVEAL ON SCROLL */
+.reveal {
+opacity: 0;
+transform: translateY(40px);
+transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+opacity: 1;
+transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+<a href="#" class="logo">ARKIV <span>·</span> ADVISORY</a>
+<ul class="nav-links">
+<li><a href="#about">About</a></li>
+<li><a href="#services">Services</a></li>
+<li><a href="#process">Process</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+<a href="#contact" class="nav-cta">Get Consultation</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+<div class="hero-bg"></div>
+<div class="hero-lines"></div>
+
+<div class="hero-tag">Lahore, Pakistan · Est. 2024</div>
+<h1 class="hero-title">Structured <em>Thinking.</em></h1>
+<h2 class="hero-subtitle">Smarter Futures.</h2>
+<p class="hero-desc">
+Arkiv Advisory is your complete financial partner — from business planning and tax consultancy to financial strategy and compliance. One firm. Every solution.
+</p>
+<div class="hero-actions">
+<a href="#services" class="btn-primary">Explore Services</a>
+<a href="#contact" class="btn-ghost">Book a Call</a>
+</div>
+
+<div class="hero-scroll">
+<div class="scroll-line"></div>
+Scroll to explore
+</div>
+<div class="hero-number">A</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+<div class="marquee-track">
+<div class="marquee-item"><span>Business Planning</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Tax Consultancy</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Financial Advisory</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Corporate Compliance</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Accounting & Audit</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Wealth Management</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Risk Assessment</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Investment Strategy</span><div class="marquee-dot"></div></div>
+<!-- Duplicate for seamless loop -->
+<div class="marquee-item"><span>Business Planning</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Tax Consultancy</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Financial Advisory</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Corporate Compliance</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Accounting & Audit</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Wealth Management</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Risk Assessment</span><div class="marquee-dot"></div></div>
+<div class="marquee-item"><span>Investment Strategy</span><div class="marquee-dot"></div></div>
+</div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+<div class="about-left reveal">
+<div class="section-tag">Who We Are</div>
+<h2 class="section-title">A different kind of<br><em>advisory firm.</em></h2>
+<p class="about-body">
+Arkiv Advisory was founded on a simple belief: businesses and individuals deserve a single, trusted partner who can handle every dimension of their financial life — intelligently and with precision.
+</p>
+<p class="about-body">
+Based in DHA, Lahore, our team of Chartered Accountants and financial specialists brings deep expertise across taxation, compliance, business strategy, and financial planning.
+</p>
+</div>
+<div class="about-right reveal">
+<div class="stat-box">
+<div class="stat-number">100%</div>
+<div class="stat-label">Client Retention</div>
+</div>
+<div class="stat-box">
+<div class="stat-number">CA</div>
+<div class="stat-label">Qualified Team</div>
+</div>
+<div class="stat-box">
+<div class="stat-number">360°</div>
+<div class="stat-label">Advisory Coverage</div>
+</div>
+<div class="stat-box">
+<div class="stat-number">DHA</div>
+<div class="stat-label">Lahore Based</div>
+</div>
+</div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+<div class="services-header reveal">
+<div>
+<div class="section-tag">What We Do</div>
+<h2 class="section-title">One firm. <em>Every solution.</em></h2>
+</div>
+<p style="max-width:320px; font-size:0.78rem; line-height:1.9; color:rgba(248,246,241,0.4);">
+We've built a practice that covers every financial need a business or individual could have — under one roof.
+</p>
+</div>
+
+<div class="services-grid">
+<div class="service-card reveal">
+<div class="service-num">01</div>
+<div class="service-name">Business Planning & Strategy</div>
+<p class="service-desc">From feasibility studies to full business plans, we help entrepreneurs and enterprises build on solid foundations with data-driven strategy.</p>
+<a href="#contact" class="service-link">Enquire now</a>
+</div>
+<div class="service-card reveal">
+<div class="service-num">02</div>
+<div class="service-name">Tax Consultancy</div>
+<p class="service-desc">Expert guidance on income tax, sales tax, and corporate tax. We optimize your tax position while ensuring full compliance with FBR regulations.</p>
+<a href="#contact" class="service-link">Enquire now</a>
+</div>
+<div class="service-card reveal">
+<div class="service-num">03</div>
+<div class="service-name">Financial Advisory</div>
+<p class="service-desc">Strategic financial counsel for individuals, families, and businesses. Investment direction, cash flow management, and long-term wealth structuring.</p>
+<a href="#contact" class="service-link">Enquire now</a>
+</div>
+<div class="service-card reveal">
+<div class="service-num">04</div>
+<div class="service-name">Accounting & Bookkeeping</div>
+<p class="service-desc">Meticulous records, timely reporting, and clean books — so you always know exactly where your business stands financially.</p>
+<a href="#contact" class="service-link">Enquire now</a>
+</div>
+<div class="service-card reveal">
+<div class="service-num">05</div>
+<div class="service-name">Corporate Compliance</div>
+<p class="service-desc">Company registration, SECP filings, annual returns, and regulatory compliance — handled seamlessly so you can focus on your business.</p>
+<a href="#contact" class="service-link">Enquire now</a>
+</div>
+<div class="service-card reveal">
+<div class="service-num">06</div>
+<div class="service-name">Audit & Assurance</div>
+<p class="service-desc">Internal and external audit services that give stakeholders confidence and provide your management team with actionable insights.</p>
+<a href="#contact" class="service-link">Enquire now</a>
+</div>
+</div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+<div style="text-align:center;" class="reveal">
+<div class="section-tag" style="justify-content:center;"><span style="width:30px;height:1px;background:var(--gold);display:inline-block;"></span> How We Work</div>
+<h2 class="section-title" style="margin-top:0;">Our <em>process.</em></h2>
+</div>
+<div class="process-steps">
+<div class="process-step reveal">
+<div class="step-circle">01</div>
+<div class="step-title">Discovery</div>
+<p class="step-desc">We begin with a thorough understanding of your goals, challenges, and financial landscape.</p>
+</div>
+<div class="process-step reveal">
+<div class="step-circle">02</div>
+<div class="step-title">Analysis</div>
+<p class="step-desc">Our team analyses your data, risk profile, and opportunities with precision and depth.</p>
+</div>
+<div class="process-step reveal">
+<div class="step-circle">03</div>
+<div class="step-title">Strategy</div>
+<p class="step-desc">We design a bespoke plan tailored exactly to your objectives and constraints.</p>
+</div>
+<div class="process-step reveal">
+<div class="step-circle">04</div>
+<div class="step-title">Execution</div>
+<p class="step-desc">We implement, monitor, and continuously refine — staying by your side every step.</p>
+</div>
+</div>
+</section>
+
+<!-- WHY US -->
+<section class="why">
+<div class="reveal">
+<div class="section-tag">Why Arkiv</div>
+<h2 class="section-title">Built different.<br><em>By design.</em></h2>
+<ul class="why-list">
+<li>
+<div class="why-check">✦</div>
+<div class="why-text">
+<strong>Chartered Accountants at the helm</strong>
+<span>Every client engagement is led by qualified CAs with years of real-world experience.</span>
+</div>
+</li>
+<li>
+<div class="why-check">✦</div>
+<div class="why-text">
+<strong>One-stop advisory model</strong>
+<span>No more juggling multiple firms. Tax, compliance, planning — all under one roof.</span>
+</div>
+</li>
+<li>
+<div class="why-check">✦</div>
+<div class="why-text">
+<strong>Confidentiality as standard</strong>
+<span>Your financial affairs are handled with absolute discretion and professional integrity.</span>
+</div>
+</li>
+<li>
+<div class="why-check">✦</div>
+<div class="why-text">
+<strong>Proactive, not reactive</strong>
+<span>We anticipate issues before they arise — saving you time, money, and stress.</span>
+</div>
+</li>
+</ul>
+</div>
+<div class="why-right reveal">
+<p class="quote-text">
+"The most valuable thing we give our clients isn't a spreadsheet — it's clarity. The confidence to make their next move."
+</p>
+<div class="quote-author">— Arkiv Advisory, DHA Lahore</div>
+</div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="industries">
+<div class="reveal">
+<div class="section-tag">Sectors We Serve</div>
+<h2 class="section-title">Industry <em>expertise.</em></h2>
+</div>
+<div class="industries-grid reveal">
+<div class="industry-pill">Real Estate</div>
+<div class="industry-pill">Manufacturing</div>
+<div class="industry-pill">Retail & FMCG</div>
+<div class="industry-pill">Healthcare</div>
+<div class="industry-pill">Technology & IT</div>
+<div class="industry-pill">Hospitality</div>
+<div class="industry-pill">Construction</div>
+<div class="industry-pill">Import & Export</div>
+<div class="industry-pill">Education</div>
+<div class="industry-pill">Non-profit & NGOs</div>
+<div class="industry-pill">Professional Services</div>
+<div class="industry-pill">High Net-Worth Individuals</div>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+<h2 class="cta-title reveal">Ready to take<br>control of your <em>finances?</em></h2>
+<p class="cta-desc reveal">Schedule a confidential consultation with our team. No obligation, just clarity.</p>
+<div class="cta-actions reveal">
+<a href="mailto:info@arkivadvisory.com" class="btn-primary">Email Us</a>
+<a href="tel:+923001234567" class="btn-ghost">Call Now</a>
+</div>
+</section>
+
+<!-- CONTACT STRIP -->
+<div class="contact-strip">
+<div class="contact-strip-text">Arkiv Advisory · DHA, Lahore</div>
+<div class="contact-strip-items">
+<div class="contact-item">
+<div>
+<strong>Location</strong>
+DHA, Lahore, Pakistan
+</div>
+</div>
+<div class="contact-item">
+<div>
+<strong>Email</strong>
+info@arkivadvisory.com
+</div>
+</div>
+<div class="contact-item">
+<div>
+<strong>Hours</strong>
+Mon – Sat, 9am – 6pm
+</div>
+</div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-top">
+<div class="footer-brand">
+<a href="#" class="logo">ARKIV <span style="color:var(--gold)">·</span> ADVISORY</a>
+<p>Your complete financial partner. Structured thinking for smarter futures — serving businesses and individuals across Pakistan.</p>
+</div>
+<div class="footer-col">
+<h4>Services</h4>
+<ul>
+<li><a href="#services">Business Planning</a></li>
+<li><a href="#services">Tax Consultancy</a></li>
+<li><a href="#services">Financial Advisory</a></li>
+<li><a href="#services">Accounting</a></li>
+<li><a href="#services">Compliance</a></li>
+<li><a href="#services">Audit</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Company</h4>
+<ul>
+<li><a href="#about">About Us</a></li>
+<li><a href="#process">Our Process</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Contact</h4>
+<ul>
+<li><a href="mailto:info@arkivadvisory.com">info@arkivadvisory.com</a></li>
+<li><a href="#">DHA, Lahore</a></li>
+<li><a href="#">Mon–Sat 9am–6pm</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<div class="footer-copy">© 2024 Arkiv Advisory. All rights reserved.</div>
+<div class="footer-tagline">Structured Thinking. Smarter Futures.</div>
+</div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+mx = e.clientX; my = e.clientY;
+cursor.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+});
+
+function animateRing() {
+rx += (mx - rx) * 0.12;
+ry += (my - ry) * 0.12;
+ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a, button').forEach(el => {
+el.addEventListener('mouseenter', () => {
+ring.style.width = '56px';
+ring.style.height = '56px';
+ring.style.borderColor = 'rgba(201,168,76,0.8)';
+});
+el.addEventListener('mouseleave', () => {
+ring.style.width = '36px';
+ring.style.height = '36px';
+ring.style.borderColor = 'rgba(201,168,76,0.5)';
+});
+});
+
+// Sticky nav
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+entries.forEach((e, i) => {
+if (e.isIntersecting) {
+setTimeout(() => e.target.classList.add('visible'), i * 80);
+observer.unobserve(e.target);
+}
+});
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
