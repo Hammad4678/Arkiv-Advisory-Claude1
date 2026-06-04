@@ -34,18 +34,19 @@
     .nav-cta:hover { background:var(--gold);color:var(--black); }
 
     /* HERO */
-    .hero { min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 60px;position:relative;overflow:hidden; }
+    .hero { min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 60px 60px;position:relative;overflow:hidden; }
+    .hero-content { max-width:900px;width:100%; }
     .hero-bg { position:absolute;inset:0;background:radial-gradient(ellipse 65% 65% at 80% 50%,rgba(201,168,76,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 15% 80%,rgba(201,168,76,.04) 0%,transparent 60%); }
     .hero-grid { position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.035) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 80%); }
 
     .hero-badge { display:inline-flex;align-items:center;gap:14px;font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:32px;opacity:0;animation:fadeUp .8s ease forwards .3s; }
     .hero-badge::before { content:'';width:36px;height:1px;background:var(--gold); }
 
-    .hero-title { font-family:'Cormorant Garamond',serif;font-size:clamp(3.4rem,8vw,7rem);font-weight:300;line-height:1.04;letter-spacing:-.01em;margin-bottom:14px;opacity:0;animation:fadeUp .9s ease forwards .5s; }
+    .hero-title { font-family:'Cormorant Garamond',serif;font-size:clamp(3.4rem,9vw,8.5rem);font-weight:300;line-height:1.04;letter-spacing:-.01em;margin-bottom:14px;opacity:0;animation:fadeUp .9s ease forwards .5s; }
     .hero-title em { font-style:italic;color:var(--gold); }
-    .hero-sub { font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,6vw,5.6rem);font-weight:300;line-height:1.05;color:rgba(248,246,241,.22);margin-bottom:44px;opacity:0;animation:fadeUp .9s ease forwards .65s; }
+    .hero-sub { font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,7vw,7rem);font-weight:300;line-height:1.05;color:rgba(248,246,241,.22);margin-bottom:44px;opacity:0;animation:fadeUp .9s ease forwards .65s; }
 
-    .hero-desc { max-width:500px;font-size:.82rem;line-height:2;color:rgba(248,246,241,.52);letter-spacing:.025em;margin-bottom:52px;opacity:0;animation:fadeUp .9s ease forwards .8s; }
+    .hero-desc { max-width:660px;font-size:.82rem;line-height:2;color:rgba(248,246,241,.52);letter-spacing:.025em;margin-bottom:52px;opacity:0;animation:fadeUp .9s ease forwards .8s; }
 
     .hero-flags { display:flex;gap:24px;flex-wrap:wrap;margin-bottom:48px;opacity:0;animation:fadeUp .9s ease forwards .9s; }
     .flag-pill { font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(248,246,241,.45);border:1px solid var(--border);padding:7px 16px; }
@@ -88,7 +89,8 @@
 
     /* SERVICES */
     .services { background:var(--black); }
-    .services-header { display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:72px; }
+    .services .section-tag { justify-content:center; }
+    .services-header { display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:72px;border-bottom:1px solid var(--border);padding-bottom:48px; }
     .services-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:2px; }
     .service-card { background:var(--off-black);padding:50px 38px;border:1px solid transparent;transition:all .4s ease;position:relative;overflow:hidden;cursor:default; }
     .service-card::after { content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 50% 100%,rgba(201,168,76,.06),transparent);opacity:0;transition:opacity .4s; }
@@ -115,10 +117,12 @@
 
     /* PROCESS */
     .process { background:var(--black);text-align:center; }
+    .process .section-tag::before { display:none; }
+    .testimonials .section-tag::before { display:none; }
     .process-steps { display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:72px;position:relative; }
     .process-steps::before { content:'';position:absolute;top:27px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,var(--border) 20%,var(--border) 80%,transparent); }
     .process-step { padding:0 28px; }
-    .step-circle { width:54px;height:54px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--gold);background:var(--black);position:relative;z-index:1;transition:all .3s; }
+    .step-circle { width:54px;height:54px;opacity:1;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--gold);background:var(--black);position:relative;z-index:1;transition:all .3s; }
     .process-step:hover .step-circle { background:var(--gold);color:var(--black);border-color:var(--gold); }
     .step-title { font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;margin-bottom:12px; }
     .step-desc { font-size:.74rem;line-height:1.85;color:rgba(248,246,241,.38); }
@@ -410,7 +414,7 @@
 <section class="hero" id="home">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
-  <div class="hero-badge">Global Business & Financial Consultancy</div>
+  <div class="hero-badge">Global Business &amp; Financial Consultancy</div>
   <h1 class="hero-title">Your finances.<br><em>Every country.</em></h1>
   <h2 class="hero-sub">One trusted partner.</h2>
   <p class="hero-desc">Arkiv Advisory is a one-stop consultancy for small and mid-size businesses operating across borders. Strategic advisory, tax planning, accounting, compliance and reporting — all managed under one roof, globally.</p>
@@ -469,8 +473,8 @@
   <div class="about-right reveal">
     <div class="stat-box"><div class="stat-number">6+</div><div class="stat-label">Countries Served</div></div>
     <div class="stat-box"><div class="stat-number">360°</div><div class="stat-label">Financial Coverage</div></div>
-    <div class="stat-box"><div class="stat-number">US & PK</div><div class="stat-label">Core Teams</div></div>
-    <div class="stat-box"><div class="stat-number">1</div><div class="stat-label">Firm. Every Solution.</div></div>
+    <div class="stat-box"><div class="stat-number">US & UAE</div><div class="stat-label">Global Teams</div></div>
+    <div class="stat-box"><div class="stat-number" style="font-size:2rem;">One Stop</div><div class="stat-label">Solution</div></div>
   </div>
 </section>
 
@@ -478,12 +482,12 @@
 
 <!-- SERVICES -->
 <section class="services" id="services">
-  <div class="services-header reveal">
-    <div>
-      <div class="section-tag">What We Do</div>
+  <div class="services-header reveal" style="text-align:center;flex-direction:column;align-items:center;">
+    <div style="text-align:center;max-width:700px;">
+      <div class="section-tag" style="justify-content:center;">What We Do</div>
       <h2 class="section-title">One firm.<br><em>Every solution.</em></h2>
+      <p style="font-size:.82rem;line-height:1.95;color:rgba(248,246,241,.38);margin-top:16px;">Everything your business needs to operate financially — across every market you're in.</p>
     </div>
-    <p style="max-width:300px;font-size:.78rem;line-height:1.95;color:rgba(248,246,241,.38);">Everything your business needs to operate financially — across every market you're in.</p>
   </div>
   <div class="services-grid">
     <div class="service-card reveal">
@@ -549,28 +553,28 @@
 </section>
 
 <!-- PROCESS -->
-<section class="process">
+<section class="process" style="padding-top:80px;">
   <div class="reveal">
-    <div class="section-tag" style="justify-content:center;"><span style="width:28px;height:1px;background:var(--gold);display:inline-block;"></span>&nbsp; How We Work</div>
-    <h2 class="section-title" style="margin-top:0;">Our <em>process.</em></h2>
+    <div class="section-tag" style="justify-content:center;padding-left:0;">How We Work</div>
+    <h2 class="section-title" style="margin-top:0;text-align:center;">Our <em>process.</em></h2>
   </div>
   <div class="process-steps">
-    <div class="process-step reveal">
+    <div class="process-step">
       <div class="step-circle">01</div>
       <div class="step-title">Discovery</div>
       <p class="step-desc">We start with a free 30-minute call to understand your business, goals, and the markets you operate in.</p>
     </div>
-    <div class="process-step reveal">
+    <div class="process-step">
       <div class="step-circle">02</div>
       <div class="step-title">Assessment</div>
       <p class="step-desc">Our team maps your current financial setup, compliance status, and cross-border requirements.</p>
     </div>
-    <div class="process-step reveal">
+    <div class="process-step">
       <div class="step-circle">03</div>
       <div class="step-title">Strategy</div>
       <p class="step-desc">We design a tailored financial framework — structured for efficiency, compliance, and growth.</p>
     </div>
-    <div class="process-step reveal">
+    <div class="process-step">
       <div class="step-circle">04</div>
       <div class="step-title">Execution</div>
       <p class="step-desc">We handle everything ongoing — reporting monthly, filing on time, advising proactively.</p>
@@ -579,27 +583,27 @@
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="testimonials">
+<section class="testimonials" style="padding-top:80px;text-align:center;">
   <div class="reveal">
-    <div class="section-tag">Client Stories</div>
+    <div class="section-tag" style="justify-content:center;">Client Stories</div>
     <h2 class="section-title">Trusted by businesses<br><em>across the globe.</em></h2>
   </div>
   <div class="testi-grid">
     <div class="testi-card reveal">
       <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
-      <div class="testi-quote">"</div>
+      <div class="testi-quote">&ldquo;</div>
       <p class="testi-text">Arkiv solved a problem we'd been struggling with for years — managing books across three countries with one coherent financial view. Game-changing for our team.</p>
       <div class="testi-author"><strong>James H.</strong><span>E-commerce Founder · United Kingdom</span></div>
     </div>
     <div class="testi-card reveal">
       <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
-      <div class="testi-quote">"</div>
+      <div class="testi-quote">&ldquo;</div>
       <p class="testi-text">As a Pakistani entrepreneur with operations in the UAE and US, finding one firm that truly understands all three markets felt impossible — until we found Arkiv.</p>
       <div class="testi-author"><strong>Sana M.</strong><span>Tech Startup CEO · UAE / Pakistan</span></div>
     </div>
     <div class="testi-card reveal">
       <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
-      <div class="testi-quote">"</div>
+      <div class="testi-quote">&ldquo;</div>
       <p class="testi-text">The free discovery call alone gave us more clarity than months of trying to figure out our cross-border tax situation. Highly professional, deeply knowledgeable team.</p>
       <div class="testi-author"><strong>David R.</strong><span>Consulting Director · Australia</span></div>
     </div>
@@ -785,5 +789,3 @@
 </script>
 </body>
 </html>
-
-   
